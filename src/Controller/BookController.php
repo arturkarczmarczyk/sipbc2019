@@ -19,10 +19,13 @@ class BookController
         $dbname = 'sipbc';
         $dbh = new \PDO("mysql:host=localhost;dbname=$dbname", $user, $pass);
 
+        $books = [];
         foreach($dbh->query('SELECT * from book') as $row) {
-            print_r($row);
+            $books[] = $row;
         }
         $dbh = null;
+
+        require_once __DIR__ . '/../View/Book/list.php';
         echo 'juz!';
     }
 
@@ -59,35 +62,7 @@ class BookController
 
 
         } else {
-
-
-            $form = <<<EOT
-        
-<html lang="pl">
-<body>
-<form method="post">
-    <label for="author">Autor:</label>
-    <input type="text" name="author" value="" id="author">
-    
-    <label for="title">Tytuł:</label>
-    <input type="text" name="title" value="" id="title">
-    
-    <label for="year">Rok:</label>
-    <input type="number" name="year" value="2019" id="year" step="1">
-    
-    <label for="location">Miejsce wydania:</label>
-    <input type="text" name="location" value="" id="location">
-    
-    <input type="submit" value="Zapisz">
-</form>
-</body>
-</html>        
-        
-EOT;
-
-            echo $form;
-
-
+            require __DIR__ . '/../View/Book/create.php';
         }
 
 
