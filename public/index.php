@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__ . '/../config/dbconfig.php';
 require_once __DIR__ . '/../src/Controller/BookController.php';
-
+require_once __DIR__ . '/../src/Model/Book.php';
 
 if (isset($_REQUEST['action'])) {
 

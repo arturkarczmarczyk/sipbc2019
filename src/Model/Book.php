@@ -111,5 +111,61 @@ class Book
         return $this;
     }
 
+    /**
+     * @return Book[]
+     */
+    public static function fetchAll()
+    {
+        global $dbConfig;
 
+        $user = $dbConfig['user'];
+        $pass = $dbConfig['pass'];
+        $dbname = $dbConfig['name'];
+        $host = $dbConfig['host'];
+
+        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+
+        $books = [];
+        foreach($dbh->query('SELECT * from book') as $row) {
+            $book = new Book();
+            $book
+                ->setId($row['id'])
+                ->setTitle($row['title'])
+                ->setAuthor($row['author'])
+                ->setYear($row['year'])
+                ->setLocation($row['location'])
+            ;
+            $books[] = $book;
+        }
+        $dbh = null;
+
+        return $books;
+    }
+
+    /**
+     * Save book to database.
+     */
+    public function save()
+    {
+        global $dbConfig;
+
+        // polacz z baza danych
+        $user = $dbConfig['user'];
+        $pass = $dbConfig['pass'];
+        $dbname = $dbConfig['name'];
+        $host = $dbConfig['host'];
+
+        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+
+        // sprawdz czy jest ID
+        if (! $this->getId()) {
+            // insert nowy jesli nie ma ID
+            $sql = "INSERT INTO book(title, author, year, location) VALUES ('{$this->getTitle()}', '{$this->getAuthor()}', '{$this->getYear()}', '{$this->getLocation()}')";
+            $dbh->query($sql);
+        } else {
+            // update istniejacego jesli jest ID
+            $sql = "UPDATE book SET title='{$this->getTitle()}', author='{$this->getAuthor()}', year={$this->getYear()}, location = '{$this->getLocation()}' WHERE id={$this->getId()}";
+            $dbh->query($sql);
+        }
+    }
 }

@@ -1,8 +1,9 @@
 <?php
-
-
 namespace App\Controller;
 
+require_once __DIR__ . '/../Model/Book.php';
+
+use App\Model\Book;
 
 class BookController
 {
@@ -14,16 +15,7 @@ class BookController
 
     public static function listAction()
     {
-        $user = 'homestead';
-        $pass = 'secret';
-        $dbname = 'sipbc';
-        $dbh = new \PDO("mysql:host=localhost;dbname=$dbname", $user, $pass);
-
-        $books = [];
-        foreach($dbh->query('SELECT * from book') as $row) {
-            $books[] = $row;
-        }
-        $dbh = null;
+        $books = Book::fetchAll();
 
         require_once __DIR__ . '/../View/Book/list.php';
         echo 'juz!';
@@ -44,22 +36,16 @@ class BookController
                 die("Nieprawidlowe dane");
             }
 
-            $author = $_REQUEST['author'];
-            $title = $_REQUEST['title'];
-            $year = $_REQUEST['year'];
-            $location = $_REQUEST['location'];
+            $book = new Book();
 
-            // zapis do db
-            $user = 'homestead';
-            $pass = 'secret';
-            $dbname = 'sipbc';
-            $dbh = new \PDO("mysql:host=localhost;dbname=$dbname", $user, $pass);
-            $sql = "INSERT INTO book(title, author, year, location) VALUES ('$title', '$author', '$year', '$location')";
-            $dbh->query($sql);
+            $book->setAuthor($_REQUEST['author']);
+            $book->setTitle($_REQUEST['title']);
+            $book->setYear($_REQUEST['year']);
+            $book->setLocation($_REQUEST['location']);
+            $book->save();
 
             // przekierowanie na liste
-            die('DOBRZE! Dodany');
-
+            header('Location: /index.php?action=books_list');
 
         } else {
             require __DIR__ . '/../View/Book/create.php';

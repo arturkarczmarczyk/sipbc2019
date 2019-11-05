@@ -1,4 +1,10 @@
-<?php require __DIR__ . '/../header.php'; ?>
+<?php
+
+/** @var $books \App\Model\Book[] */
+
+require __DIR__ . '/../header.php';
+
+?>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Książki</h1>
@@ -26,11 +32,11 @@
         <tbody>
         <?php foreach ($books as $book): ?>
             <tr>
-                <th scope="row"><?= $book['id'] ?></th>
-                <td><?= $book['title'] ?></td>
-                <td><?= $book['author'] ?></td>
-                <td><?= $book['year'] ?></td>
-                <td><?= $book['location'] ?></td>
+                <th scope="row"><?= $book->getId() ?></th>
+                <td><?= $book->getTitle() ?></td>
+                <td><?= $book->getAuthor() ?></td>
+                <td><?= $book->getYear() ?></td>
+                <td><?= $book->getLocation() ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
