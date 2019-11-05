@@ -116,14 +116,7 @@ class Book
      */
     public static function fetchAll()
     {
-        global $dbConfig;
-
-        $user = $dbConfig['user'];
-        $pass = $dbConfig['pass'];
-        $dbname = $dbConfig['name'];
-        $host = $dbConfig['host'];
-
-        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+        $dbh = self::getConnection();
 
         $books = [];
         foreach($dbh->query('SELECT * from book') as $row) {
@@ -147,15 +140,8 @@ class Book
      */
     public function save()
     {
-        global $dbConfig;
-
         // polacz z baza danych
-        $user = $dbConfig['user'];
-        $pass = $dbConfig['pass'];
-        $dbname = $dbConfig['name'];
-        $host = $dbConfig['host'];
-
-        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+        $dbh = self::getConnection();
 
         // sprawdz czy jest ID
         if (! $this->getId()) {
@@ -167,5 +153,19 @@ class Book
             $sql = "UPDATE book SET title='{$this->getTitle()}', author='{$this->getAuthor()}', year={$this->getYear()}, location = '{$this->getLocation()}' WHERE id={$this->getId()}";
             $dbh->query($sql);
         }
+    }
+
+    public static function getConnection()
+    {
+        global $dbConfig;
+
+        $user = $dbConfig['user'];
+        $pass = $dbConfig['pass'];
+        $dbname = $dbConfig['name'];
+        $host = $dbConfig['host'];
+
+        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+
+        return $dbh;
     }
 }
