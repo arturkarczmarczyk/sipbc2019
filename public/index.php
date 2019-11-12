@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . '/../config/dbconfig.php';
-require_once __DIR__ . '/../src/Controller/BookController.php';
-require_once __DIR__ . '/../src/Model/Book.php';
+require_once  __DIR__ . '/../vendor/autoload.php';
+
+
+$reader = new \App\Model\Reader();
+$lease = new \App\Model\Lease();
 
 if (isset($_REQUEST['action'])) {
 

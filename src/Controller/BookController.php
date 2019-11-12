@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller;
 
-require_once __DIR__ . '/../Model/Book.php';
-
 use App\Model\Book;
 
 class BookController
