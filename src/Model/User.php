@@ -4,7 +4,7 @@
 namespace App\Model;
 
 
-class User
+class User extends Model
 {
     /** @var int */
     private $id;
@@ -109,6 +109,56 @@ class User
     {
         $this->role = $role;
         return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public static function findOneByEmailAndPassword($email, $password)
+    {
+        $dbh = self::getConnection();
+
+        // robimy hash hasla
+        $passHash = sha1($password);
+
+        $sql = "SELECT * FROM appuser WHERE email = :email AND password = :password";
+        $statement = $dbh->prepare($sql);
+
+        $status = $statement->execute([
+            'email' => $email,
+            'password' => $passHash,
+        ]);
+
+        $userArray = $statement->fetch();
+
+        if (! $userArray) {
+            return null;
+        }
+
+        $user = new self();
+        $user->setId($userArray['id']);
+        $user->setLogin($userArray['login']);
+        $user->setEmail($userArray['email']);
+        $user->setPassword(null);
+        $user->setRole($userArray['role']);
+
+        return $user;
+    }
+
+    public function __construct($id = null)
+    {
+        if ($id && is_numeric($id) && $id > 0) {
+            $dbh = self::getConnection();
+            $sql = "SELECT * FROM appuser WHERE id = $id";
+            $result = $dbh->query($sql);
+            $resultArray = $result->fetch();
+
+            $this->setId($resultArray['id']);
+            $this->setLogin($resultArray['login']);
+            $this->setEmail($resultArray['email']);
+            $this->setPassword($resultArray['password']);
+            $this->setRole($resultArray['role']);
+        }
     }
 
 

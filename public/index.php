@@ -2,9 +2,7 @@
 require_once __DIR__ . '/../config/dbconfig.php';
 require_once  __DIR__ . '/../vendor/autoload.php';
 
-
-$reader = new \App\Model\Reader();
-$lease = new \App\Model\Lease();
+session_start();
 
 if (isset($_REQUEST['action'])) {
 
@@ -18,6 +16,15 @@ if (isset($_REQUEST['action'])) {
         case 'books_edit':
             \App\Controller\BookController::editAction();
             break;
+
+
+
+        case 'login':
+            \App\Controller\AuthController::loginAction();
+            break;
+
+
+
         default:
             header('Location: /index.php?action=books_list');
             break;

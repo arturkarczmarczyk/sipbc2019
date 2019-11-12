@@ -20,5 +20,9 @@
         <a class="p-2 text-dark" href="/index.php?action=books_list">Książki</a>
         <a class="p-2 text-dark" href="#">Wypożyczenia</a>
     </nav>
-    <a class="btn btn-outline-primary" href="#">Zaloguj</a>
+    <?php if (\App\Util\AuthUtil::getCurrentUser()): ?>
+        <a class="btn btn-outline-primary" href="#"><?= \App\Util\AuthUtil::getCurrentUser()->getLogin() ?></a>
+    <?php else: ?>
+        <a class="btn btn-outline-primary" href="/index.php?action=login">Zaloguj</a>
+    <?php endif; ?>
 </div>

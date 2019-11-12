@@ -4,7 +4,7 @@
 namespace App\Model;
 
 
-class Book
+class Book extends Model
 {
     /** @var int */
     private $id;
@@ -169,22 +169,5 @@ class Book
             $sql = "UPDATE book SET title='{$this->getTitle()}', author='{$this->getAuthor()}', year={$this->getYear()}, location = '{$this->getLocation()}' WHERE id={$this->getId()}";
             $dbh->query($sql);
         }
-    }
-
-    /**
-     * @return \PDO
-     */
-    public static function getConnection()
-    {
-        global $dbConfig;
-
-        $user = $dbConfig['user'];
-        $pass = $dbConfig['pass'];
-        $dbname = $dbConfig['name'];
-        $host = $dbConfig['host'];
-
-        $dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-
-        return $dbh;
     }
 }
