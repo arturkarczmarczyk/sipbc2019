@@ -12,6 +12,9 @@ if (isset($_REQUEST['action'])) {
         case 'books_create':
             \App\Controller\BookController::createAction();
             break;
+        case 'books_edit':
+            \App\Controller\BookController::editAction();
+            break;
         default:
             header('Location: /index.php?action=books_list');
             break;

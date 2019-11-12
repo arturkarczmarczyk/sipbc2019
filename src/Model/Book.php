@@ -21,6 +21,22 @@ class Book
     /** @var string */
     private $location;
 
+    public function __construct($id = null)
+    {
+        if ($id && is_numeric($id) && $id > 0) {
+            $dbh = self::getConnection();
+            $sql = "SELECT * FROM book WHERE id = $id";
+            $result = $dbh->query($sql);
+            $resultArray = $result->fetch();
+
+            $this->setId($resultArray['id']);
+            $this->setTitle($resultArray['title']);
+            $this->setAuthor($resultArray['author']);
+            $this->setYear($resultArray['year']);
+            $this->setLocation($resultArray['location']);
+        }
+    }
+
     /**
      * @return int
      */
@@ -155,6 +171,9 @@ class Book
         }
     }
 
+    /**
+     * @return \PDO
+     */
     public static function getConnection()
     {
         global $dbConfig;

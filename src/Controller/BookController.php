@@ -53,4 +53,29 @@ class BookController
 
 
     }
+
+    public static function editAction()
+    {
+        if (! isset($_REQUEST['id']) && $_REQUEST['id'] <= 0) {
+            die("Brak ID ksiazki");
+        }
+        $bookId = $_REQUEST['id'];
+        $book = new Book($bookId);
+
+        if (isset($_REQUEST['author'])) {
+            // tutaj jakies przetwarzanie / aktualizacja
+            $book->setTitle($_REQUEST['title']);
+            $book->setAuthor($_REQUEST['author']);
+            $book->setLocation($_REQUEST['location']);
+            $book->setYear($_REQUEST['year']);
+
+            $book->save();
+
+            header('Location: /index.php?action=books_list');
+            return;
+        }
+
+        // tutaj wyswietlic formularz edycji
+        require __DIR__ . '/../View/Book/edit.php';
+    }
 }

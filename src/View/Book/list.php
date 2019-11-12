@@ -27,6 +27,7 @@ require __DIR__ . '/../header.php';
             <th scope="col">Autor</th>
             <th scope="col">Rok</th>
             <th scope="col">Miasto</th>
+            <th scope="col">Akcje</th>
         </tr>
         </thead>
         <tbody>
@@ -37,6 +38,9 @@ require __DIR__ . '/../header.php';
                 <td><?= $book->getAuthor() ?></td>
                 <td><?= $book->getYear() ?></td>
                 <td><?= $book->getLocation() ?></td>
+                <td>
+                    <a href="/index.php?action=books_edit&id=<?= $book->getId() ?>" class="btn btn-primary">Edytuj</a>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
